@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import'package:flutter/material.dart';
 
 
@@ -17,9 +19,9 @@ class _myappState extends State<myapp> {
 
   TextEditingController textcontroller=TextEditingController();
 
-  List<String> addlist=[];
-
-  bool iscomplete=false;
+  List<Map<String,dynamic>> addlist=[];
+   
+   bool iscomplete=false;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +54,9 @@ class _myappState extends State<myapp> {
        MaterialButton(onPressed: (){
         setState(() {
          if(textcontroller.text.trim().isNotEmpty){
-          addlist.add(textcontroller.text.trim()); 
+          addlist.add({'title':textcontroller.text.trim(),
+          'iscomplete':false
+          }); 
          }
          else{
 
@@ -78,15 +82,20 @@ class _myappState extends State<myapp> {
        child: Row(children: [
        IconButton(onPressed: (){
        setState(() {
-        iscomplete=!iscomplete;
+        if(addlist[index]['iscomplete']==false){
+           addlist[index]['iscomplete']=true;
+        }
+        else{
+           addlist[index]['iscomplete']=false;
+        }
        });
        },
-       icon: Icon(iscomplete
+       icon: Icon(addlist[index]['iscomplete']
                     ?Icons.check_box
                     :Icons.check_box_outline_blank)),
 
        Expanded(child:Padding(padding: EdgeInsets.all(10),
-       child: Text(addlist[index],
+       child: Text(addlist[index]['title'],
        style: TextStyle(color: Colors.black,
        fontSize: 18,
        fontWeight: FontWeight.w400)),), ),
